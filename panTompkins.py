@@ -156,13 +156,15 @@ def panTompkins(ECG, fs, plot = 1):
     if type(ECG) == list or type(ECG) is np.ndarray:
         ECG = np.array(ECG)             
         
-    #Initialize 
+    #Initialize
+    sb_count = 0
     RRAVERAGE1 = []
     RRAVERAGE2 = []
     IWF_signal_peaks = []
     IWF_noise_peaks = []
     noise_peaks = []
-    ECG_bp_peaks = []
+#    ECG_bp_peaks = []
+    ECG_bp_peaks = np.array([])
     ECG_bp_signal_peaks = []
     ECG_bp_noise_peaks = []
     final_R_locs = []
@@ -245,14 +247,11 @@ def panTompkins(ECG, fs, plot = 1):
         searchIndices = np.arange(peak - searchInterval, peak + searchInterval + 1, 1)        
         #neighborhood search indices cannot be negative and cannot exceed length of filtered ECG
         if searchIndices[0] >= 0 and all(searchIndices <= len(ECG_bp)):            
-            ECG_bp_peaks.append(np.where(ECG_bp == max(ECG_bp[searchIndices]))[0][0])            
+#            ECG_bp_peaks.append(np.where(ECG_bp == max(ECG_bp[searchIndices]))[0][0])  
+             ECG_bp_peaks = np.append(ECG_bp_peaks, np.where(ECG_bp == max(ECG_bp[searchIndices]))[0][0])          
         else:
-            #edge cases 
-            if c == 0:                
-                ECG_bp_peaks.append(np.where(ECG_bp == max(ECG_bp[:peak]))[0][0])                
-            elif not all(searchIndices <= len(ECG_movavg)):
-                ECG_bp_peaks.append(np.where(ECG_bp == max(ECG_bp[peak:]))[0][0])
-        
+#            ECG_bp_peaks.append(np.where(ECG_bp == max(ECG_bp[searchIndices[0]:len(ECG_bp)-1])))
+             ECG_bp_peaks = np.append(ECG_bp_peaks, np.where(ECG_bp == max(ECG_bp[searchIndices[0]:len(ECG_bp)-1])))
         #LEARNING PHASE 2
         if c > 0 and c < len(ECG_bp_peaks):                     
             if c < 8:                
@@ -267,13 +266,13 @@ def panTompkins(ECG, fs, plot = 1):
                 RRAVERAGE1_vec = np.diff(peaks[c - 8:c + 1]) / fs
                 RRAVERAGE1_mean = np.mean(RRAVERAGE1_vec)
                 RRAVERAGE1.append(RRAVERAGE1_mean) 
-
+    
                 for rr in np.arange(0, len(RRAVERAGE1_vec)):
                     if RRAVERAGE1_vec[rr] > RR_LOW_LIMIT and RRAVERAGE1_vec[rr] < RR_HIGH_LIMIT:                              
                         RRAVERAGE2.append(RRAVERAGE1_vec[rr])                                     
                         if len(RRAVERAGE2) > 8:
                             del RRAVERAGE2[:len(RRAVERAGE2) - 8]
-
+    
                 if len(RRAVERAGE2) == 8:
                     RR_LOW_LIMIT = 0.92 * np.mean(RRAVERAGE2)        
                     RR_HIGH_LIMIT = 1.16 * np.mean(RRAVERAGE2)
@@ -290,7 +289,8 @@ def panTompkins(ECG, fs, plot = 1):
                
             #Search back triggered if current RR interval is greater than RR_MISSED_LIMIT
             currentRRint = RRAVERAGE1_vec[-1]
-            if currentRRint > RR_MISSED_LIMIT:                      
+            if currentRRint > RR_MISSED_LIMIT:  
+                sb_count += sb_count                    
                 SBinterval = int(np.round(RR_MISSED_LIMIT * fs))
                 #find local maximum in the search back interval between signal and noise thresholds                        
                 SBdata_IWF = ECG_movavg[peak - SBinterval + 1:peak + 1]
@@ -353,9 +353,9 @@ def panTompkins(ECG, fs, plot = 1):
             elif ECG_movavg[peak] < THRESHOLDI1:
                 #update noise thresholds
                 noise_peaks.append(peak)
-                NPKI = 0.125*ECG_movavg[peak]  + 0.875*NPKI            
+                NPKI = 0.125 * ECG_movavg[peak]  + 0.875 * NPKI            
                 ECG_bp_noise_peaks.append(ECG_bp_peaks[c])                       
-                NPKF = 0.125*ECG_bp_peaks[c] + 0.875*NPKF
+                NPKF = 0.125 * ECG_bp_peaks[c] + 0.875 * NPKF
                     
             #reset 
             T_wave_found = 0                
@@ -370,12 +370,15 @@ def panTompkins(ECG, fs, plot = 1):
     #adjust for filter delays
     ECG_R_locs = [i - delay for i in ECG_bp_signal_peaks] 
     
-    #neighborhood search in raw ECG signal for increase accuracy of R peak detection
+    #neighborhood search in raw ECG signal for increase accuracy of R peak detection    
     for i in ECG_R_locs:
+        ECG = np.array(ECG)
         searchInterval = int(np.round(0.02 * fs))
         searchIndices = np.arange(i - searchInterval, i + searchInterval + 1, 1)
+        searchIndices = [i.item() for i in searchIndices] #convert to native Python int
         final_R_locs.append(np.where(ECG[searchIndices] == max(ECG[searchIndices]))[0][0] + searchIndices[0])
     
+#    final_R_locs = ECG_R_locs
     #plot ECG signal with R peaks marked
     if plot == 1:
         samples = np.arange(0, len(ECG))
@@ -384,7 +387,7 @@ def panTompkins(ECG, fs, plot = 1):
     else:
         pass
         
-    return final_R_locs
+    return final_R_locs, sb_count
                     
 def findPeaks(ECG_movavg):
     """finds peaks in Integration Waveform by smoothing, locating zero crossings, and moving average amplitude thresholding"""
