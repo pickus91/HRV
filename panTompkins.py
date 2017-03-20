@@ -390,7 +390,7 @@ def panTompkins(ECG, fs, plot = 1):
     return final_R_locs, sb_count
                     
 def findPeaks(ECG_movavg):
-    """finds peaks in Integration Waveform by smoothing, locating zero crossings, and moving average amplitude thresholding"""
+    """finds peaks in Integration Waveform by smoothing and locating zero crossings"""
     #smoothing
     N = 15
     ECG_movavg_smooth = np.convolve(ECG_movavg, np.ones((N,)) / N, mode = 'same')    
