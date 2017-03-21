@@ -168,7 +168,8 @@ def panTompkins(ECG, fs, plot = 1):
     ECG_bp_signal_peaks = []
     ECG_bp_noise_peaks = []
     final_R_locs = []
-    T_wave_found = 0           
+    T_wave_found = 0      
+    sb_count = []     
     
     #LOW PASS FILTERING
     #Transfer function: H(z)=(1-z^-6)^2/(1-z^-1)^2
@@ -290,14 +291,18 @@ def panTompkins(ECG, fs, plot = 1):
             #Search back triggered if current RR interval is greater than RR_MISSED_LIMIT
             currentRRint = RRAVERAGE1_vec[-1]
             if currentRRint > RR_MISSED_LIMIT:  
-                sb_count += sb_count                    
-                SBinterval = int(np.round(RR_MISSED_LIMIT * fs))
+                sb_count.append(c)                   
+                SBinterval = int(np.round(currentRRint * fs))
                 #find local maximum in the search back interval between signal and noise thresholds                        
-                SBdata_IWF = ECG_movavg[peak - SBinterval + 1:peak + 1]
-                SBdata_IWF_filtered = ECG_movavg[(SBdata_IWF > THRESHOLDI1) & (SBdata_IWF < THRESHOLDI2)]            
-                    
-                if SBdata_IWF_filtered:   
-                    SB_IWF_loc = np.where(ECG_movavg == max(SBdata_IWF_filtered))[0][0]      
+                SBdata_IWF = ECG_movavg[peak - SBinterval + 1:peak + 1]               
+                
+                SBdata_IWF_filtered = np.where((SBdata_IWF > THRESHOLDI1))[0]
+                #SBdata_max_loc = np.where(SBdata_IWF[SBdata_IWF_filtered] == max(SBdata_IWF[SBdata_IWF_filtered]))[0][0]
+                SBdata_max_loc = np.where(SBdata_IWF == max(SBdata_IWF[SBdata_IWF_filtered]))[0][0]
+
+                #SBdata_max_loc = SBdata_max_loc[0]
+                if len(SBdata_IWF_filtered) > 0:   
+                    SB_IWF_loc = peak - SBinterval + 1 + SBdata_max_loc
                     IWF_signal_peaks.append(SB_IWF_loc) 
                     #update signal and noise thresholds
                     SPKI = 0.25 * ECG_movavg[SB_IWF_loc] + 0.75 * SPKI                         
@@ -305,18 +310,26 @@ def panTompkins(ECG, fs, plot = 1):
                     THRESHOLDI2 = 0.5 * THRESHOLDI1               
                     #finding corresponding search back peak in ECG bandpass using 0.15 s neighborhood search window
                     if SB_IWF_loc < len(ECG_bp):
-                        SBdata_ECGfilt = ECG_bp[SB_IWF_loc - round(0.15 * fs):SB_IWF_loc]
-                        SB_ECGfilt_loc = np.where(ECG_bp == max(SBdata_ECGfilt))[0][0]                    
+                        SBdata_ECGfilt = ECG_bp[SB_IWF_loc - round(0.15 * fs): SB_IWF_loc]
+                        #SB_ECGfilt_loc = np.where(ECG_bp == max(SBdata_ECGfilt))[0][0]  
+                        
+                        SBdata_ECGfilt_filtered = np.where((SBdata_ECGfilt > THRESHOLDF1))[0]
+                        SBdata_max_loc2 = np.where(SBdata_ECGfilt == max(SBdata_ECGfilt[SBdata_ECGfilt_filtered]))[0][0]
+             
+                        
                     else:
                         SBdata_ECGfilt = ECG_bp[SB_IWF_loc - round(0.15 * fs):]
-                        SB_ECGfilt_loc = np.where(ECG_bp == max(SBdata_ECGfilt))[0][0] 
+                        #SB_ECGfilt_loc = np.where(ECG_bp == max(SBdata_ECGfilt))[0][0] 
+                        SBdata_ECGfilt_filtered = np.where((SBdata_ECGfilt > THRESHOLDF1))[0]
+                        SBdata_max_loc2 = np.where(SBdata_ECGfilt == max(SBdata_ECGfilt[SBdata_ECGfilt_filtered]))[0][0]
+
                             
-                    if ECG_bp[SB_ECGfilt_loc] > THRESHOLDF2: #QRS complex detected in filtered ECG
+                    if ECG_bp[SB_IWF_loc - round(0.15 * fs) + SBdata_max_loc2] > THRESHOLDF2: #QRS complex detected in filtered ECG
                         #update signal and noise thresholds                                                          
-                        SPKF = 0.25 * ECG_bp[SB_ECGfilt_loc] + 0.75 * SPKF                            
+                        SPKF = 0.25 * ECG_bp[SB_IWF_loc - round(0.15 * fs) + SBdata_max_loc2] + 0.75 * SPKF                            
                         THRESHOLDF1 = NPKF + 0.25 * (SPKF - NPKF)
                         THRESHOLDF2 = 0.5 * THRESHOLDF1                            
-                        ECG_bp_signal_peaks.append(SB_ECGfilt_loc)                                                 
+                        ECG_bp_signal_peaks.append(SB_IWF_loc - round(0.15 * fs) + SBdata_max_loc2)                                                 
     
             #T-WAVE AND QRS DISRCIMINATION    
             if ECG_movavg[peak] >= THRESHOLDI1: 
@@ -339,36 +352,60 @@ def panTompkins(ECG, fs, plot = 1):
                     SPKI = 0.125 * ECG_movavg[peak]  + 0.875 * SPKI
                     #check if corresponding peak in filtered ECG is also a signal peak                        
                     if ECG_bp_peaks[c] > THRESHOLDF1:                                            
-                        SPKF = 0.125 * ECG_bp_peaks[c] + 0.875 * SPKF 
+                        SPKF = 0.125 * ECG_bp[c] + 0.875 * SPKF 
                         ECG_bp_signal_peaks.append(ECG_bp_peaks[c])                             
                     else:
                         ECG_bp_noise_peaks.append(ECG_bp_peaks[c])
-                        NPKF = 0.125 * ECG_bp_peaks[c] + 0.875 * NPKF                   
+                        NPKF = 0.125 * ECG_bp[c] + 0.875 * NPKF                   
                                         
             elif ECG_movavg[peak] > THRESHOLDI1 and ECG_movavg[peak] < THRESHOLDI2:
                 #update noise thresholds
                 NPKI = 0.125 * ECG_movavg[peak]  + 0.875 * NPKI  
-                NPKF = 0.125 * ECG_bp_peaks[c] + 0.875 * NPKF
+                NPKF = 0.125 * ECG_bp[c] + 0.875 * NPKF
                     
             elif ECG_movavg[peak] < THRESHOLDI1:
                 #update noise thresholds
                 noise_peaks.append(peak)
                 NPKI = 0.125 * ECG_movavg[peak]  + 0.875 * NPKI            
                 ECG_bp_noise_peaks.append(ECG_bp_peaks[c])                       
-                NPKF = 0.125 * ECG_bp_peaks[c] + 0.875 * NPKF
+                NPKF = 0.125 * ECG_bp[c] + 0.875 * NPKF
+        else:
+            if ECG_movavg[peak] >= THRESHOLDI1: #first peak is a signal peak
+                IWF_signal_peaks.append(peak) 
+                #update signal  thresholds
+                SPKI = 0.125 * ECG_movavg[peak]  + 0.875 * SPKI
+                if ECG_bp_peaks[c] > THRESHOLDF1:                                            
+                    SPKF = 0.125 * ECG_bp[c] + 0.875 * SPKF 
+                    ECG_bp_signal_peaks.append(ECG_bp_peaks[c])                             
+                else:
+                    ECG_bp_noise_peaks.append(ECG_bp_peaks[c])
+                    NPKF = 0.125 * ECG_bp[c] + 0.875 * NPKF                                    
+                
+            elif ECG_movavg[peak] > THRESHOLDI2 and ECG_movavg[peak] < THRESHOLDI1:
+                #update noise thresholds
+                NPKI = 0.125 * ECG_movavg[peak]  + 0.875 * NPKI  
+                NPKF = 0.125 * ECG[c] + 0.875 * NPKF
+                                    
+            elif ECG_movavg[peak] < THRESHOLDI2:
+                #update noise thresholds
+                noise_peaks.append(peak)
+                NPKI = 0.125 * ECG_movavg[peak]  + 0.875 * NPKI            
+                ECG_bp_noise_peaks.append(ECG_bp_peaks[c])                       
+                NPKF = 0.125 * ECG_bp[c] + 0.875 * NPKF       
+            
                     
-            #reset 
-            T_wave_found = 0                
-                
-            #update thresholds
-            THRESHOLDI1 = NPKI + 0.25 * (SPKI - NPKI)
-            THRESHOLDI2 = 0.5 * THRESHOLDI1 
-                
-            THRESHOLDF1 = NPKF + 0.25 * (SPKF - NPKF)
-            THRESHOLDF2 = 0.5 * THRESHOLDF1
+        #reset 
+        T_wave_found = 0                
+            
+        #update thresholds
+        THRESHOLDI1 = NPKI + 0.25 * (SPKI - NPKI)
+        THRESHOLDI2 = 0.5 * THRESHOLDI1 
+            
+        THRESHOLDF1 = NPKF + 0.25 * (SPKF - NPKF)
+        THRESHOLDF2 = 0.5 * THRESHOLDF1
     
     #adjust for filter delays
-    ECG_R_locs = [i - delay for i in ECG_bp_signal_peaks] 
+    ECG_R_locs = [int(i - delay) for i in ECG_bp_signal_peaks] 
     
     #neighborhood search in raw ECG signal for increase accuracy of R peak detection    
     for i in ECG_R_locs:
@@ -378,7 +415,6 @@ def panTompkins(ECG, fs, plot = 1):
         searchIndices = [i.item() for i in searchIndices] #convert to native Python int
         final_R_locs.append(np.where(ECG[searchIndices] == max(ECG[searchIndices]))[0][0] + searchIndices[0])
     
-#    final_R_locs = ECG_R_locs
     #plot ECG signal with R peaks marked
     if plot == 1:
         samples = np.arange(0, len(ECG))
@@ -390,7 +426,7 @@ def panTompkins(ECG, fs, plot = 1):
     return final_R_locs, sb_count
                     
 def findPeaks(ECG_movavg):
-    """finds peaks in Integration Waveform by smoothing and locating zero crossings"""
+    """finds peaks in Integration Waveform by smoothing, locating zero crossings, and moving average amplitude thresholding"""
     #smoothing
     N = 15
     ECG_movavg_smooth = np.convolve(ECG_movavg, np.ones((N,)) / N, mode = 'same')    
