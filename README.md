@@ -1,10 +1,15 @@
 # HRV
-## Time Domain 
 
-## Frequency Domain 
+## R-Peak Detection
+### Pan-Tompkins
 
-## Poincare 
+## HRV Features
+### Time Domain 
 
-## Multifractal Detrended Fluctuation Analysis (MF-DFA)
+### Frequency Domain 
 
-## Multiscale Entropy (MSE)
+### Poincare 
+
+### Multifractal Detrended Fluctuation Analysis (MF-DFA)
+
+### Multiscale Entropy (MSE)
