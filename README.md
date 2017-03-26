@@ -20,7 +20,7 @@ within the refractory period.Since this algorithm is often used to find R-peak l
 around the final QRS detection locations to find exact R-peak locations.
 
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png" align="center" height="400" width="500">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="400" width="480">
 
 ## HRV Features
 ### Time Domain 
@@ -38,14 +38,17 @@ Kantelhardt, Jan W., et al. "Multifractal detrended fluctuation analysis of
 nonstationary time series." *Physica A: Statistical Mechanics and its Applications*
 316.1 (2002): 87-114
 
-MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al*](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length. 
+MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al*](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
+
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="400" width="480">
 
 A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, cubic, and/or other higher polynomials may be used in the fitting procedure. These DFA orders differ in their ability to eliminate various types of trends from the time series. Thus, an estimation of the type of time series trend can be captured via comparison of the different DFA orders, as seen below. 
 
 
 Following the polynomial fit, the average of all the segments are obtained via:
 
-where q is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F_q (s)* depend on scale s for various values of q.
+where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
 
 ### Multiscale Entropy (MSE)
 
