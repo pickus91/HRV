@@ -1,4 +1,3 @@
-
 # HRV
 
 This is a Python module for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
@@ -20,7 +19,7 @@ within the refractory period.Since this algorithm is often used to find R-peak l
 around the final QRS detection locations to find exact R-peak locations.
 
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png" align="center" height="400" width="500">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG" align="center" height="400" width="480">
 
 ## HRV Features
 ### Time Domain 
@@ -41,14 +40,28 @@ nonstationary time series." *Physica A: Statistical Mechanics and its Applicatio
 MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al*](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
 
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="400" width="480">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="400" width="480">
+
+
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="400" width="480">
 
 A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, cubic, and/or other higher polynomials may be used in the fitting procedure. These DFA orders differ in their ability to eliminate various types of trends from the time series. Thus, an estimation of the type of time series trend can be captured via comparison of the different DFA orders, as seen below. 
+
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%201.png" align = "center" height = "300" width = "350">
+
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%202.png" align = "center" height = "300" width = "350">
+
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%203.png" align = "center" height = "300" width = "350">
 
 
 Following the polynomial fit, the average of all the segments are obtained via:
 
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align = "center" height = "75" width = "200">
+
 where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
+
+The above procedure is repeated over various scales to provide a relationship between the qth order fluctuation coefficient and scale. The final step of the MF-DFA procedure is determining the scaling behavior of the various fluctuation coefficients by generating a log-log plot of *F<sub>q</sub>(s)* versus *s*. In general, *F<sub>q</sub>(s)* increases with increases in scale, with a linear relationship on the double log plot indicating the presence of scaling. This behavior can be characterized by a scaling exponent α, which is the slope of the line of best fit describing the relationship between *F<sub>q</sub>(s)* and scale.
+
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/DFA%20Output.png" align = "center" height = "300" width = "350">
 
 ### Multiscale Entropy (MSE)
 
