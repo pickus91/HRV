@@ -1,8 +1,10 @@
+
 # HRV
 
 This is a Python module for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
 
 ## Prerequisites
+
 * [NumPy] (http://www.numpy.org/)
 * [Matplotlib] (http://matplotlib.org/)
 * [SciPy] (https://www.scipy.org/)
@@ -14,14 +16,16 @@ Implements the popular QRS complex detection algorithm introduced in:
 
 [Pan, Jiapu, and Willis J. Tompkins. "A real-time QRS detection algorithm." *IEEE transactions on biomedical engineering* 3 (1985): 230-236.](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf)
 
+
 The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur
 within the refractory period.Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search
 around the final QRS detection locations to find exact R-peak locations.
 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png" align="center" height="400" width="500">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png" align="center" height="350" width="450">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG" align="center" height="350" width="450">
 
 ## HRV Features
+
 ### Time Domain 
 
 | Label         | Description                                                       |
@@ -54,18 +58,26 @@ nonstationary time series." *Physica A: Statistical Mechanics and its Applicatio
 
 MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al*](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="300" width="350">
 
-
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="400" width="480">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="300" width="350">
 
 A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, cubic, and/or other higher polynomials may be used in the fitting procedure. These DFA orders differ in their ability to eliminate various types of trends from the time series. Thus, an estimation of the type of time series trend can be captured via comparison of the different DFA orders, as seen below. 
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%201.png" align = "center" height = "300" width = "350">
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%202.png" align = "center" height = "300" width = "350">
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%203.png" align = "center" height = "300" width = "350">
+          
+
+
+
+<div>
+        <ul>
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%201.png" alt="" class="first" height = "250" width = "300" align = "center">
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%202.png" alt="" class="" height = "250" width = "300" align = "center">
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%203.png" alt="" class="" height = "250" width = "300" align = "center" >              
+        </ul>
+<div>
+
 
 
 Following the polynomial fit, the average of all the segments are obtained via:
