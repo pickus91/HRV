@@ -24,10 +24,25 @@ around the final QRS detection locations to find exact R-peak locations.
 ## HRV Features
 ### Time Domain 
 
-
+| Label         | Description                                                       |
+|:-------------:| :---------------------------------------------------------------- |
+| ANN           | Average NN interval                                               | 
+| SDNN          | Standard deviation of NN intervals                                |   
+| SDSD          | Standard deviation of successive NN intervals                     | 
+| NN50          | Number of successive NN intervals differing by more than 50 ms    |
+| pNN50         | Proportion of successive NN intervals differing by more than 50 ms|
+| rMMSD         | Root mean square of successive NN intervals                       |
+| MedianNN      | Median of NN intervals                                            |
 
 ### Frequency Domain 
 
+  | Label         | Description                                                      |
+  |:-------------:|:---------------------------------------------------------------- |
+  | VLF Power     | Log of normalized spectral power between 0.003 Hz and 0.04 Hz    | 
+  | LF Power      | Log of normalized spectral power between 0.04 Hz and 0.15 Hz     |   
+  | HF Power      | Log of normalized spectral power between 0.15 Hz and 0.4 Hz      | 
+  | LF/HF Ratio   | Ratio between LF and HF spectral power                           |
+  
 ### Poincare 
 
 ### Multifractal Detrended Fluctuation Analysis (MF-DFA)
