@@ -46,10 +46,13 @@ around the final QRS detection locations to find exact R-peak locations.
   | HF Power      | Log of normalized spectral power between 0.15 Hz and 0.4 Hz      | 
   | LF/HF Ratio   | Ratio between LF and HF spectral power                           |
   
+<img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align="center" height="350" width="450"> 
+
 ### Poincare 
 
 Poincare plots are an important visualization technique for quantifying the non-linear characteristics of the RR interval time series. The geometrical descriptors that can be extracted from the poincare plot with this package have been shown to provide insights into short and long term HRV trends. This includes parameters derived from the ellipse fitting method described in [Brennan, *et al* (2001)](http://ieeexplore.ieee.org/abstract/document/1018984/) and the heart rate asymmetry (HRA) method that quantifies accelerations/decelerations in heart rate introduced in [Guzik, Przemyslaw, *et al* (2006)](https://www.researchgate.net/profile/Przemyslaw_Guzik/publication/6734042_Heart_rate_asymmetry_by_Poincare_plots_of_RR_intervals/links/00463516712a5287a9000000/Heart-rate-asymmetry-by-Poincare-plots-of-RR-intervals.pdf)
 
+<img src="https://github.com/pickus91/HRV/blob/master/figures/PoincarePlot.png" align="center" height="350" width="450">
 
 ### Multifractal Detrended Fluctuation Analysis (MF-DFA)
 Multi-fractal detrended fluctuation analysis (MF-DFA) introduced in:
