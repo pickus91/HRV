@@ -13,10 +13,10 @@ This is a Python module for performing heart rate variability (HRV) analysis on 
 
 Implements the popular QRS complex detection algorithm introduced in [Pan, *et al* (1985)](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf). The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur within the refractory period.Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search around the final QRS detection locations to find exact R-peak locations.
 
-<div>
+
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="450">
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection.png"  height="350" width="450">
-</div>
+
 
 ## HRV Features
 
@@ -73,10 +73,9 @@ A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, 
 
 Following the polynomial fit, the average of all the segments are obtained via:
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" height = "75" width = "200">
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align="center" height = "75" width = "200">
 
 where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
-
 The above procedure is repeated over various scales to provide a relationship between the qth order fluctuation coefficient and scale. The final step of the MF-DFA procedure is determining the scaling behavior of the various fluctuation coefficients by generating a log-log plot of *F<sub>q</sub>(s)* versus *s*. In general, *F<sub>q</sub>(s)* increases with increases in scale, with a linear relationship on the double log plot indicating the presence of scaling. This behavior can be characterized by a scaling exponent α, which is the slope of the line of best fit describing the relationship between *F<sub>q</sub>(s)* and scale.
 
 <div align = "center">
