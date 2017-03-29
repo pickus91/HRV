@@ -75,8 +75,6 @@ A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, 
         </ul>
 <div>
 
-
-
 Following the polynomial fit, the average of all the segments are obtained via:
 
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align = "center" height = "75" width = "200">
@@ -85,10 +83,14 @@ where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA 
 
 The above procedure is repeated over various scales to provide a relationship between the qth order fluctuation coefficient and scale. The final step of the MF-DFA procedure is determining the scaling behavior of the various fluctuation coefficients by generating a log-log plot of *F<sub>q</sub>(s)* versus *s*. In general, *F<sub>q</sub>(s)* increases with increases in scale, with a linear relationship on the double log plot indicating the presence of scaling. This behavior can be characterized by a scaling exponent α, which is the slope of the line of best fit describing the relationship between *F<sub>q</sub>(s)* and scale.
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/DFA%20Output.png" align = "center" height = "300" width = "350">
+<div align = "center">
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/DFA%20Output.png" align = "center" height = "400" width = "500">
+</div>
 
 ### Multiscale Entropy (MSE)
 
-Costa, Madalena, Ary L. Goldberger, and C-K. Peng. "Multiscale entropy 
-analysis of complex physiologic time series." *Physical review letters* 89.6 
-(2002): 068102.
+Implements the multiscale entropy (MSE) algorithm introduced in [Costa, *et al* (2002)](http://dbiom.org/files/publications/Peng_MultiscaleEntropyAnalysisComplexPhysiologicTimeSeries.pdf). MSE can be used as a tool for measuring the complexity of the RR tachogram. The MSE algorithm works by computing sample entropy at multiple scales (for various "coarse-grained" series), making it advantageious for analyzing features related to structure on scales other than the shortest one. Details on computing sample entropy are detailed in [Pincas, *et al* (1991)(https://www.ncbi.nlm.nih.gov/pmc/articles/PMC51218/pdf/pnas01056-0271.pdf). As seen below, applying the MSE algorithm to (uncorrelated) white noise results in a monotonically decreasing entropy measure, while its application to pink noise (or 1/f noise) reveals structure across multiple scales.
+
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Noise_EntropyMeasures.png" align = "center" height = "400" width = "500">
+
+
