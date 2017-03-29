@@ -15,7 +15,7 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
 
 <div>
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="400">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG"  height="350" width="450">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection.png"  height="350" width="450">
 </div>
 
 ## HRV Features
