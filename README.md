@@ -23,8 +23,9 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
 ### Time Domain 
 Time domain features are perhaps the simplist method computationally for performning HRV analysis. Following R-peak detection (see [PanTompkins](https://github.com/pickus91/HRV/blob/master/panTompkins.py)), ectopic beats are removed to produce a normal-to-normal (NN) interval series. Various statistical measures can then be extracted from the time series that provide insights into heart rate linear dynamics. 
 
+<center>
 | Label         | Description                                                       |
-<|:-------------:| :---------------------------------------------------------------- |
+|:-------------:| :---------------------------------------------------------------- |
 | ANN           | Average NN interval                                               | 
 | SDNN          | Standard deviation of NN intervals                                |   
 | SDSD          | Standard deviation of successive NN intervals                     | 
@@ -32,33 +33,37 @@ Time domain features are perhaps the simplist method computationally for perform
 | pNN50         | Proportion of successive NN intervals differing by more than 50 ms|
 | rMMSD         | Root mean square of successive NN intervals                       |
 | MedianNN      | Median of NN intervals                                            |
+</center>
 
 ### Frequency Domain 
 Spectral analysis is a standard in HRV analysis. Features are extracted from the power spectral density (PSD) of the NN interval time series. The PSD within various frequency bands is estimated using [Welch's method](https://en.wikipedia.org/wiki/Welch%27s_method). The most common frequency bands under investigation are the very low frequency (VLF) band, the low frequency (LF) band, and the high frequency (HF) band. The spectral power distributions across these bands has been shown to provide insight into modulations in autnomic nervous system (ANS) activity.
 
+<center>
   | Label         | Description                                                      |
   |:-------------:|:---------------------------------------------------------------- |
   | VLF Power     | Log of normalized spectral power between 0.003 Hz and 0.04 Hz    | 
   | LF Power      | Log of normalized spectral power between 0.04 Hz and 0.15 Hz     |   
   | HF Power      | Log of normalized spectral power between 0.15 Hz and 0.4 Hz      | 
   | LF/HF Ratio   | Ratio between LF and HF spectral power                           |
-  
- 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align = "center" height="350" width="450"> 
+</center>
 
+<div align = "center">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align = "center" height="350" width="450"> 
+</div>
 
 ### Poincare 
 
-Poincare plots are an important visualization technique for quantifying the non-linear characteristics of the RR interval time series. The geometrical descriptors that can be extracted from the poincare plot with this package have been shown to provide insights into short and long term HRV trends. This includes parameters derived from the ellipse fitting method described in [Brennan, *et al* (2001)](http://ieeexplore.ieee.org/abstract/document/1018984/) and the heart rate asymmetry (HRA) method that quantifies accelerations/decelerations in heart rate introduced in [Guzik, Przemyslaw, *et al* (2006)](https://www.researchgate.net/profile/Przemyslaw_Guzik/publication/6734042_Heart_rate_asymmetry_by_Poincare_plots_of_RR_intervals/links/00463516712a5287a9000000/Heart-rate-asymmetry-by-Poincare-plots-of-RR-intervals.pdf)
+Poincare plots are an important visualization technique for quantifying the non-linear characteristics of the RR interval time series. The geometrical descriptors that can be extracted from the poincare plot with this package have been shown to provide insights into short and long term HRV trends. This includes parameters derived from the ellipse fitting method described in [Brennan, *et al* (2001)](http://ieeexplore.ieee.org/abstract/document/1018984/) and the heart rate asymmetry (HRA) method that quantifies accelerations/decelerations in heart rate introduced in [Guzik, Przemyslaw, *et al* (2006)](https://www.researchgate.net/profile/Przemyslaw_Guzik/publication/6734042_Heart_rate_asymmetry_by_Poincare_plots_of_RR_intervals/links/00463516712a5287a9000000/Heart-rate-asymmetry-by-Poincare-plots-of-RR-intervals.pdf).
+
 <div align = "center">
 <img src="https://github.com/pickus91/HRV/blob/master/figures/PoincarePlot.png" align="center" height="350" width="450">
 </div>
+
 ### Multifractal Detrended Fluctuation Analysis (MF-DFA)
 Multi-fractal detrended fluctuation analysis (MF-DFA) introduced in [Kantelhardt, *et al*](https://arxiv.org/pdf/physics/0202070.pdf).
 MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al* (1995)](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
 
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" height="300" width="350">
-
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" height="300" width="350">
 
 A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, cubic, and/or other higher polynomials may be used in the fitting procedure. These DFA orders differ in their ability to eliminate various types of trends from the time series. Thus, an estimation of the type of time series trend can be captured via comparison of the different DFA orders, as seen below. 
