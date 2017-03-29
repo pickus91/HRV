@@ -24,7 +24,7 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
 Time domain features are perhaps the simplist method computationally for performning HRV analysis. Following R-peak detection (see [PanTompkins](https://github.com/pickus91/HRV/blob/master/panTompkins.py)), ectopic beats are removed to produce a normal-to-normal (NN) interval series. Various statistical measures can then be extracted from the time series that provide insights into heart rate linear dynamics. 
 
 | Label         | Description                                                       |
-|:-------------:| :---------------------------------------------------------------- |
+<|:-------------:| :---------------------------------------------------------------- |
 | ANN           | Average NN interval                                               | 
 | SDNN          | Standard deviation of NN intervals                                |   
 | SDSD          | Standard deviation of successive NN intervals                     | 
@@ -50,9 +50,9 @@ Spectral analysis is a standard in HRV analysis. Features are extracted from the
 ### Poincare 
 
 Poincare plots are an important visualization technique for quantifying the non-linear characteristics of the RR interval time series. The geometrical descriptors that can be extracted from the poincare plot with this package have been shown to provide insights into short and long term HRV trends. This includes parameters derived from the ellipse fitting method described in [Brennan, *et al* (2001)](http://ieeexplore.ieee.org/abstract/document/1018984/) and the heart rate asymmetry (HRA) method that quantifies accelerations/decelerations in heart rate introduced in [Guzik, Przemyslaw, *et al* (2006)](https://www.researchgate.net/profile/Przemyslaw_Guzik/publication/6734042_Heart_rate_asymmetry_by_Poincare_plots_of_RR_intervals/links/00463516712a5287a9000000/Heart-rate-asymmetry-by-Poincare-plots-of-RR-intervals.pdf)
-
+<div align = "center">
 <img src="https://github.com/pickus91/HRV/blob/master/figures/PoincarePlot.png" align="center" height="350" width="450">
-
+</div>
 ### Multifractal Detrended Fluctuation Analysis (MF-DFA)
 Multi-fractal detrended fluctuation analysis (MF-DFA) introduced in [Kantelhardt, *et al*](https://arxiv.org/pdf/physics/0202070.pdf).
 MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al* (1995)](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
@@ -72,9 +72,9 @@ A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, 
 <div>
 
 Following the polynomial fit, the average of all the segments are obtained via:
-
+<div align = "center">
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align="center" height = "75" width = "200">
-
+</div>
 where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
 The above procedure is repeated over various scales to provide a relationship between the qth order fluctuation coefficient and scale. The final step of the MF-DFA procedure is determining the scaling behavior of the various fluctuation coefficients by generating a log-log plot of *F<sub>q</sub>(s)* versus *s*. In general, *F<sub>q</sub>(s)* increases with increases in scale, with a linear relationship on the double log plot indicating the presence of scaling. This behavior can be characterized by a scaling exponent α, which is the slope of the line of best fit describing the relationship between *F<sub>q</sub>(s)* and scale.
 
