@@ -1,5 +1,3 @@
-
-
 # HRV
 
 This is a Python module for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
@@ -15,8 +13,10 @@ This is a Python module for performing heart rate variability (HRV) analysis on 
 
 Implements the popular QRS complex detection algorithm introduced in [Pan, *et al* (1985)](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf). The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur within the refractory period.Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search around the final QRS detection locations to find exact R-peak locations.
 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png" align="center" height="350" width="450">
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG" align="center" height="350" width="450">
+<div>
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="400">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection_Init%20Phase.PNG"  height="350" width="450">
+</div>
 
 ## HRV Features
 
@@ -43,7 +43,9 @@ Spectral analysis is a standard in HRV analysis. Features are extracted from the
   | HF Power      | Log of normalized spectral power between 0.15 Hz and 0.4 Hz      | 
   | LF/HF Ratio   | Ratio between LF and HF spectral power                           |
   
-<img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align="center" height="350" width="450"> 
+<div align="center">  
+<img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" height="350" width="450"> 
+<div>
 
 ### Poincare 
 
@@ -55,29 +57,23 @@ Poincare plots are an important visualization technique for quantifying the non-
 Multi-fractal detrended fluctuation analysis (MF-DFA) introduced in [Kantelhardt, *et al*](https://arxiv.org/pdf/physics/0202070.pdf).
 MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al* (1995)](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" align="center" height="300" width="350">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" height="300" width="350">
 
-<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" align="center" height="300" width="350">
+<img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" height="300" width="350">
 
 A polynomial is then fitted to each non-overlapping segment. Linear, quadratic, cubic, and/or other higher polynomials may be used in the fitting procedure. These DFA orders differ in their ability to eliminate various types of trends from the time series. Thus, an estimation of the type of time series trend can be captured via comparison of the different DFA orders, as seen below. 
 
-
-
-          
-
-
-
 <div>
         <ul>
-            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%201.png" alt="" class="first" height = "250" width = "300" align = "center">
-            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%202.png" alt="" class="" height = "250" width = "300" align = "center">
-            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%203.png" alt="" class="" height = "250" width = "300" align = "center" >              
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%201.png" alt="" class="first" height = "250" width = "275">
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%202.png" alt="" class="" height = "250" width = "275">
+            <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%203%20-%20Calculate%20local%20trend%20-%20m%20%3D%203.png" alt="" class="" height = "250" width = "275">              
         </ul>
 <div>
 
 Following the polynomial fit, the average of all the segments are obtained via:
 
-<img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align = "center" height = "75" width = "200">
+<img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" height = "75" width = "200">
 
 where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
 
