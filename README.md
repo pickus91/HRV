@@ -11,7 +11,7 @@ This is a Python module for performing heart rate variability (HRV) analysis on 
 ## R-Peak Detection
 ### Pan-Tompkins
 
-Implements the popular QRS complex detection algorithm introduced in [Pan, *et al* (1985)](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf). The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur within the refractory period.Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search around the final QRS detection locations to find exact R-peak locations.
+Implements the popular QRS complex detection algorithm introduced in [Pan, *et al* (1985)](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf). The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur within the refractory period. Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search around the final QRS detection locations to find exact R-peak locations.
 
 <div align = "center">
 <img style="float: left;" src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="425">
@@ -23,9 +23,8 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
 
 ### Time Domain 
 Time domain features are perhaps the simplist method computationally for performning HRV analysis. Following R-peak detection (see [PanTompkins](https://github.com/pickus91/HRV/blob/master/panTompkins.py)), ectopic beats are removed to produce a normal-to-normal (NN) interval series. Various statistical measures can then be extracted from the time series that provide insights into heart rate linear dynamics. 
-
-
-| Label         | Description                                                       |
+<center>
+| Label         | Description                                                       |
 |:-------------:| :---------------------------------------------------------------- |
 | ANN           | Average NN interval                                               | 
 | SDNN          | Standard deviation of NN intervals                                |   
@@ -34,7 +33,7 @@ Time domain features are perhaps the simplist method computationally for perform
 | pNN50         | Proportion of successive NN intervals differing by more than 50 ms|
 | rMMSD         | Root mean square of successive NN intervals                       |
 | MedianNN      | Median of NN intervals                                            |
-
+</center>
 
 ### Frequency Domain 
 Spectral analysis is a standard in HRV analysis. Features are extracted from the power spectral density (PSD) of the NN interval time series. The PSD within various frequency bands is estimated using [Welch's method](https://en.wikipedia.org/wiki/Welch%27s_method). The most common frequency bands under investigation are the very low frequency (VLF) band, the low frequency (LF) band, and the high frequency (HF) band. The spectral power distributions across these bands has been shown to provide insight into modulations in autnomic nervous system (ANS) activity.
