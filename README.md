@@ -1,6 +1,6 @@
 # HRV
 
-This is a Python module for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
+This is a Python module/tutorial for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
 
 ## Dependencies
 
@@ -80,7 +80,8 @@ Following the polynomial fit, the average of all the segments are obtained via:
 <div align = "center">
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Fluctuation%20Coefficient.PNG" align="center" height = "75" width = "200">
 </div>
-where *q* is the order of the fluctuation coefficient. When _q_ = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
+
+where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA procedure simplifies to standard DFA. It may be of the user’s interests to explore how the q-dependent fluctuation coefficients *F<sub>q</sub>(s)* depend on scale s for various values of *q*.
 The above procedure is repeated over various scales to provide a relationship between the qth order fluctuation coefficient and scale. The final step of the MF-DFA procedure is determining the scaling behavior of the various fluctuation coefficients by generating a log-log plot of *F<sub>q</sub>(s)* versus *s*. In general, *F<sub>q</sub>(s)* increases with increases in scale, with a linear relationship on the double log plot indicating the presence of scaling. This behavior can be characterized by a scaling exponent α, which is the slope of the line of best fit describing the relationship between *F<sub>q</sub>(s)* and scale.
 
 <div align = "center">
@@ -90,6 +91,7 @@ The above procedure is repeated over various scales to provide a relationship be
 ### Multiscale Entropy (MSE)
 
 Implements the multiscale entropy (MSE) algorithm introduced in [Costa, *et al* (2002)](http://dbiom.org/files/publications/Peng_MultiscaleEntropyAnalysisComplexPhysiologicTimeSeries.pdf). MSE can be used as a tool for measuring the complexity of the RR tachogram. The MSE algorithm works by computing sample entropy at multiple scales (for various "coarse-grained" series), making it advantageious for analyzing features related to structure on scales other than the shortest one. Details on computing sample entropy are detailed in [Pincas, *et al* (1991)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC51218/pdf/pnas01056-0271.pdf). As seen below, applying the MSE algorithm to (uncorrelated) white noise results in a monotonically decreasing entropy measure, while its application to pink noise (or 1/f noise) reveals structure across multiple scales.
+
 <div align = "center">
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Noise_EntropyMeasures.png" align = "center" height = "400" width = "500">
 </div>
