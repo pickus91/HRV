@@ -17,7 +17,7 @@ This code is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) f
 
 Implements the popular QRS complex detection algorithm introduced in [Pan, *et al* (1985)](https://www.researchgate.net/profile/Keesam_Jeong/publication/3728672_A_simple_real-time_QRS_detection_algorithm/links/54e829e10cf2f7aa4d4f64a9.pdf). The algorithm uses filtering, adaptive thresholding, and criteria based on human cardiac physiology to detect QRS complexes in the face of noise and quickly changing and diverse ECG morphologies. This function implements the Pan-Tompkins algorithm as it was originally published, along with two modifications which include additional filtering and eliminating potential QRS detections that occur within the refractory period. Since this algorithm is often used to find R-peak locations (and not just general QRS detection) for applications such as Heart Rate Variability (HRV) analysis, this function also performs a neighborhood search around the final QRS detection locations to find exact R-peak locations.
 
-## Code Example
+#### Code Example
 ```
     R_peak_locs = panTompkins(ECG, fs, plot = 1)
 
