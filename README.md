@@ -1,10 +1,8 @@
-
 # HRV
 
 This is a Python module/tutorial for performing heart rate variability (HRV) analysis on electrocardiogram (ECG) time series. 
 
 ## Dependencies
-
 * [NumPy](http://www.numpy.org/)
 * [Matplotlib](http://matplotlib.org/)
 * [SciPy](https://www.scipy.org/)
@@ -35,6 +33,12 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
 ### Time Domain 
 Time domain features are perhaps the simplist method computationally for performning HRV analysis. Following R-peak detection (see [PanTompkins](https://github.com/pickus91/HRV/blob/master/panTompkins.py)), ectopic beats are removed to produce a normal-to-normal (NN) interval series. Various statistical measures can then be extracted from the time series that provide insights into heart rate linear dynamics. 
 
+#### Code Example
+
+```
+timeDomainFeats = timeDomain(RR_interval_series)
+```
+
 | Label         | Description                                                       |
 |:-------------:| :---------------------------------------------------------------- |
 | ANN           | Average NN interval                                               | 
@@ -49,6 +53,11 @@ Time domain features are perhaps the simplist method computationally for perform
 ### Frequency Domain 
 Spectral analysis is a standard in HRV analysis. Features are extracted from the power spectral density (PSD) of the NN interval time series. The PSD within various frequency bands is estimated using [Welch's method](https://en.wikipedia.org/wiki/Welch%27s_method). The most common frequency bands under investigation are the very low frequency (VLF) band, the low frequency (LF) band, and the high frequency (HF) band. The spectral power distributions across these bands has been shown to provide insight into modulations in autnomic nervous system (ANS) activity.
 
+#### Code Example
+
+```
+freqDomainFeats = timeDomain(RR_interval_series)
+```
 
   | Label         | Description                                                      |
   |:-------------:|:---------------------------------------------------------------- |
@@ -72,7 +81,16 @@ Poincare plots are an important visualization technique for quantifying the non-
 
 ### Multifractal Detrended Fluctuation Analysis (MF-DFA)
 Multi-fractal detrended fluctuation analysis (MF-DFA) introduced in [Kantelhardt, *et al*](https://arxiv.org/pdf/physics/0202070.pdf).
-MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al* (1995)](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
+MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced by [Peng, *et al* (1995)](http://havlin.biu.ac.il/PS/Quantification%20of%20scaling%20exponents%20and%20crossover%20phenomena%20in%20nonstationary%20heartbeat%20time%20series.pdf). 
+
+#### Code Example
+```
+
+
+```
+
+
+The algorithm involves dividing the integrated RR interval time series into non-overlapping segments of equal length, *s*. 
 <div align = "center">
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Original%20RR%20Series.png" height="300" width="350">
 <img src="https://github.com/pickus91/HRV/blob/master/figures/Step%201%20-%20Integrated%20Time%20Series.png" height="300" width="350">
@@ -101,8 +119,16 @@ where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA 
 ### Multiscale Entropy (MSE)
 
 Implements the multiscale entropy (MSE) algorithm introduced in [Costa, *et al* (2002)](http://dbiom.org/files/publications/Peng_MultiscaleEntropyAnalysisComplexPhysiologicTimeSeries.pdf). MSE can be used as a tool for measuring the complexity of the RR tachogram. The MSE algorithm works by computing sample entropy at multiple scales (for various "coarse-grained" series), making it advantageious for analyzing features related to structure on scales other than the shortest one. Details on computing sample entropy are detailed in [Pincas, *et al* (1991)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC51218/pdf/pnas01056-0271.pdf). As seen below, applying the MSE algorithm to (uncorrelated) white noise results in a monotonically decreasing entropy measure, while its application to pink noise (or 1/f noise) reveals structure across multiple scales.
-
+#### Code Example
+```
+import multiScaleEntropy as MSE
+entropyMeasure = MSE.multiScaleEntropy(RR_interval_series,
+                                       mseScales = np.arange(1,11),
+                                       r = 0.2 * np.std(RRints),
+                                       m = 2)
+```
 <div align = "center">
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Noise_EntropyMeasures.png" align = "center" height = "400" width = "500">
 </div>
+
 
