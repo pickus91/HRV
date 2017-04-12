@@ -118,7 +118,8 @@ where *q* is the order of the fluctuation coefficient. When *q* = 2, the MF-DFA 
 
 ### Multiscale Entropy (MSE)
 
-Implements the multiscale entropy (MSE) algorithm introduced in [Costa, *et al* (2002)](http://dbiom.org/files/publications/Peng_MultiscaleEntropyAnalysisComplexPhysiologicTimeSeries.pdf). MSE can be used as a tool for measuring the complexity of the RR tachogram. The MSE algorithm works by computing sample entropy at multiple scales (for various "coarse-grained" series), making it advantageious for analyzing features related to structure on scales other than the shortest one. Details on computing sample entropy are detailed in [Pincas, *et al* (1991)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC51218/pdf/pnas01056-0271.pdf). As seen below, applying the MSE algorithm to (uncorrelated) white noise results in a monotonically decreasing entropy measure, while its application to pink noise (or 1/f noise) reveals structure across multiple scales.
+Implements the multiscale entropy (MSE) algorithm introduced in [Costa, *et al* (2002)](http://dbiom.org/files/publications/Peng_MultiscaleEntropyAnalysisComplexPhysiologicTimeSeries.pdf). MSE can be used as a tool for measuring the complexity of the RR tachogram. The MSE algorithm works by computing sample entropy at multiple scales (for various "coarse-grained" series), making it advantageious for analyzing features related to structure on scales other than the shortest one. Details on computing sample entropy are detailed in [Pincas, *et al* (1991)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC51218/pdf/pnas01056-0271.pdf). 
+
 #### Code Example
 ```
 import multiScaleEntropy as MSE
@@ -127,6 +128,9 @@ entropyMeasure = MSE.multiScaleEntropy(RR_interval_series,
                                        r = 0.2 * np.std(RRints),
                                        m = 2)
 ```
+
+As seen below, applying the MSE algorithm to (uncorrelated) white noise results in a monotonically decreasing entropy measure, while its application to pink noise (or 1/f noise) reveals structure across multiple scales.
+
 <div align = "center">
 <img src = "https://github.com/pickus91/HRV/blob/master/figures/Noise_EntropyMeasures.png" align = "center" height = "400" width = "500">
 </div>
