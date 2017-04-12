@@ -85,7 +85,8 @@ MF-DFA is based on the standard detrended fluctuation analysis (DFA) introduced 
 
 #### Code Example
 ```
-
+from DFA import scalingExponent
+scalingExponent(timeSeries, lowerScaleLimit = 10, upperScaleLimit = 40, scaleDensity = 30, m = 1, q = 2, plot = 1)
 
 ```
 
