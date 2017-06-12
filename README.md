@@ -20,7 +20,7 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
     R_peak_locs = panTompkins(ECG, fs, plot = 1)
 
 ```
-<div align = "center">
+ <div align = "center">
 <img style="float: left;" src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="425">
 <img style="float: right;" src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection.png"  height="350" width="425">
 </div>
@@ -70,7 +70,7 @@ freqDomainFeats = frequencyDomain(RR_interval_series)
 <img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align = "center" height="350" width="450"> 
 </div>
 
-The ```frequencyDomain``` function also has the capability to compute the frequency domain features listed in the table above using the spectral boundary adaptation described in [X. Long, *et al* (2014)](https://pure.tue.nl/ws/files/3855045/5718586174038081.pdf). The idea behind using adapted spectral bands is to account for the time varying behavior of these bands (e.g. whilst sleeping) and to potentially reduce the within – and between – subject frequency domain feature variabilities. This method works by adapting the bands according to the peak frequencies found within the traditional spectral bands and setting their lower and upper bounds based off specified bandwidths.
+The ```frequencyDomain``` function also has the capability to compute the frequency domain features listed in the table above using the spectral boundary adaptation method described in [X. Long, *et al* (2014)](https://pure.tue.nl/ws/files/3855045/5718586174038081.pdf). The idea behind using adapted spectral bands is to account for the time varying behavior of these bands (e.g. whilst sleeping) and to potentially reduce the within – and between – subject frequency domain feature variabilities. This method works by adapting the bands according to the peak frequencies found within the traditional spectral bands and setting their lower and upper bounds to values based off specified bandwidths.
 
 <div>
 <ul>        
