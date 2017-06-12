@@ -20,7 +20,6 @@ Implements the popular QRS complex detection algorithm introduced in [Pan, *et a
     R_peak_locs = panTompkins(ECG, fs, plot = 1)
 
 ```
-
 <div align = "center">
 <img style="float: left;" src="https://github.com/pickus91/HRV/blob/master/figures/Original%20Signal.png"  height="350" width="425">
 <img style="float: right;" src="https://github.com/pickus91/HRV/blob/master/figures/Final%20R%20Peak%20detection.png"  height="350" width="425">
@@ -36,7 +35,7 @@ Time domain features are perhaps the simplist method computationally for perform
 #### Code Example
 
 ```
-timeDomainFeats = timeDomain(RR_interval_series)
+timeDomainFeats = timDomain(RR_interval_series)
 ```
 
 | Label         | Description                                                       |
@@ -56,7 +55,7 @@ Spectral analysis is a standard in HRV analysis. Features are extracted from the
 #### Code Example
 
 ```
-freqDomainFeats = timeDomain(RR_interval_series)
+freqDomainFeats = frequencyDomain(RR_interval_series)
 ```
 
   | Label         | Description                                                      |
@@ -71,6 +70,14 @@ freqDomainFeats = timeDomain(RR_interval_series)
 <img src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain.png" align = "center" height="350" width="450"> 
 </div>
 
+The ```frequencyDomain``` function also has the capability to compute the frequency domain features listed in the table above using the spectral boundary adaptation described in [X. Long, *et al* (2014)](https://pure.tue.nl/ws/files/3855045/5718586174038081.pdf). The idea behind using adapted spectral bands is to account for the time varying behavior of these bands (e.g. whilst sleeping) and to potentially reduce the within – and between – subject frequency domain feature variabilities. This method works by adapting the bands according to the peak frequencies found within the traditional spectral bands and setting their lower and upper bounds based off specified bandwidths.
+
+<div>
+<ul>        
+<img style="float: left;" src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain_traditional_bands.png"  height="350" width="400">
+<img style="float: right;" src="https://github.com/pickus91/HRV/blob/master/figures/frequencyDomain_adapted_bands.png"  height="350" width="400">
+ </ul>
+</div>
 ### Poincare 
 
 Poincare plots are an important visualization technique for quantifying the non-linear characteristics of the RR interval time series. The geometrical descriptors that can be extracted from the poincare plot with this package have been shown to provide insights into short and long term HRV trends. This includes parameters derived from the ellipse fitting method described in [Brennan, *et al* (2001)](http://ieeexplore.ieee.org/abstract/document/1018984/) and the heart rate asymmetry (HRA) method that quantifies accelerations/decelerations in heart rate introduced in [Guzik, Przemyslaw, *et al* (2006)](https://www.researchgate.net/profile/Przemyslaw_Guzik/publication/6734042_Heart_rate_asymmetry_by_Poincare_plots_of_RR_intervals/links/00463516712a5287a9000000/Heart-rate-asymmetry-by-Poincare-plots-of-RR-intervals.pdf).
